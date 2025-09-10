@@ -1,0 +1,81 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+  safelist: [
+    // Colores de texto
+    'text-blue-600',
+    'text-green-600', 
+    'text-purple-600',
+    'text-orange-600',
+    'text-blue-700',
+    'text-green-700',
+    'text-purple-700',
+    'text-orange-700',
+    'text-blue-800',
+    'text-green-800',
+    'text-purple-800',
+    'text-orange-800',
+    
+    // Backgrounds
+    'bg-blue-50',
+    'bg-green-50',
+    'bg-purple-50',
+    'bg-orange-50',
+    'bg-blue-100',
+    'bg-green-100',
+    'bg-purple-100',
+    'bg-orange-100',
+    'bg-blue-600',
+    'bg-green-600',
+    'bg-purple-600',
+    'bg-orange-600',
+    'bg-blue-700',
+    'bg-green-700',
+    'bg-purple-700',
+    'bg-orange-700',
+    
+    // Borders
+    'border-blue-200',
+    'border-green-200',
+    'border-purple-200',
+    'border-orange-200',
+    'border-blue-300',
+    'border-green-300',
+    'border-purple-300',
+    'border-orange-300',
+    'border-blue-500',
+    'border-green-500',
+    'border-purple-500',
+    'border-orange-500',
+    
+    // Hovers
+    'hover:bg-blue-50',
+    'hover:bg-green-50',
+    'hover:bg-purple-50',
+    'hover:bg-orange-50',
+    'hover:bg-blue-200',
+    'hover:bg-green-200',
+    'hover:bg-purple-200',
+    'hover:bg-orange-200',
+    'hover:bg-blue-700',
+    'hover:bg-green-700',
+    'hover:bg-purple-700',
+    'hover:bg-orange-700',
+    'hover:border-blue-300',
+    'hover:border-green-300',
+    'hover:border-purple-300',
+    'hover:border-orange-300',
+    'hover:border-blue-500',
+    'hover:border-green-500',
+    'hover:border-purple-500',
+    'hover:border-orange-500'
+  ]
+}
