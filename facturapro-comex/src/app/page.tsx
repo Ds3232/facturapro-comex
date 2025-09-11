@@ -1,122 +1,4 @@
-{/* Modal para Editar Template */}
-            {modalType === 'editTemplate' && editingTemplate && (
-              <>
-                <div className="flex justify-between items-center mb-6">
-                  <div className="flex items-center space-x-3">
-                    {renderIcon(getDocumentConfig(editingTemplate).icon, getColorClasses(getDocumentConfig(editingTemplate).color).text)}
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900">
-                        Editar Template: {getDocumentConfig(editingTemplate).name}
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        Personaliza los campos y estructura del documento
-                      </p>
-                    </div>
-                  </div>
-                  <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
-                    <X size={24} />
-                  </button>
-                </div>
-
-                <div className="space-y-6">
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Info className="text-blue-600" size={16} />
-                      <h5 className="font-medium text-blue-900">Editor de Templates</h5>
-                    </div>
-                    <p className="text-sm text-blue-700">
-                      Los templates definen la estructura de los documentos. Las variables {{}} se completarán automáticamente con datos extraídos por la IA.
-                    </p>
-                  </div>
-
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-                    <h4 className="font-medium text-gray-900 mb-4">Vista Previa del Template</h4>
-                    <div className="space-y-4 text-sm">
-                      {getDocumentConfig(editingTemplate).defaultTemplate.structure.sections.map((section, index) => (
-                        <div key={index} className="border-b pb-3">
-                          <h5 className="font-medium text-gray-800 mb-2">{section.name}</h5>
-                          <div className="bg-white p-3 rounded text-xs space-y-1">
-                            {Object.entries(section.fields).map(([key, value]) => (
-                              <div key={key} className="flex justify-between">
-                                <span className="text-gray-600 capitalize">
-                                  {key.replace(/([A-Z])/g, ' $1').trim()}:
-                                </span>
-                                <span className="font-mono">{value}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                    <h5 className="font-medium text-green-900 mb-2">Variables Disponibles</h5>
-                    <div className="text-sm text-green-700 space-y-1">
-                      <div>• {{invoiceNumber}} → Número de factura</div>
-                      <div>• {{customerName}} → Nombre del cliente</div>
-                      <div>• {{totalAmount}} → Monto total</div>
-                      <div>• {{productDescription}} → Descripción del producto</div>
-                      <div>• {{vesselName}} → Nombre de la embarcación</div>
-                      <div>• {{containerNumber}} → Número de contenedor</div>
-                    </div>
-                  </div>
-
-                  {/* Botones */}
-                  <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200">
-                    <button
-                      onClick={closeModal}
-                      className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
-                    >
-                      Cancelar
-                    </button>
-                    <button
-                      onClick={() => {
-                        alert(`Template de ${getDocumentConfig(editingTemplate).name} guardado exitosamente!`);
-                        closeModal();
-                      }}
-                      className={`px-4 py-2 ${getColorClasses(getDocumentConfig(editingTemplate).color).bg} text-white rounded-md hover:${getColorClasses(getDocumentConfig(editingTemplate).color).bgHover} flex items-center space-x-2`}
-                    >
-                      <Save size={16} />
-                      <span>Guardar Template</span>
-                    </button>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Modal de Procesamiento */}
-      {isProcessing && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-8 max-w-md w-full mx-4">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-purple-600 mx-auto mb-4"></div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Procesando con IA</h3>
-              <p className="text-gray-600 mb-4">Analizando y extrayendo información de los documentos...</p>
-              <div className="space-y-2 text-sm text-gray-500">
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="w-2 h-2 bg-purple-600 rounded-full animate-pulse"></div>
-                  <span>Leyendo archivos PDF</span>
-                </div>
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="w-2 h-2 bg-purple-600 rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
-                  <span>Extrayendo datos</span>
-                </div>
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="w-2 h-2 bg-purple-600 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
-                  <span>Generando documentos</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}'use client';
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import { 
@@ -652,4 +534,198 @@ export default function FacturaProApp() {
                     </div>
                     <div className="flex items-center space-x-2">
                       <FolderOpen size={14} />
-                      <span>{client.orders.length}
+                      <span>{client.orders.length} órdenes</span>
+                    </div>
+                  </div>
+
+                  <div className="flex space-x-2">
+                    <button 
+                      onClick={() => showView('clientDetail', client)}
+                      className="flex-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm"
+                    >
+                      Ver Detalles
+                    </button>
+                    <button 
+                      onClick={() => createOrder(client.id)}
+                      className="flex-1 px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded text-sm"
+                    >
+                      Nueva Orden
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Vista Settings simplificada para que funcione */}
+        {currentView === 'settings' && (
+          <div className="space-y-6">
+            <h2 className="text-3xl font-bold text-gray-900">Configuración del Sistema</h2>
+            
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Información del Sistema</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                <div>
+                  <div className="text-gray-600">Versión</div>
+                  <div className="font-medium">FacturaPro COMEX v1.0.0</div>
+                </div>
+                <div>
+                  <div className="text-gray-600">Estado</div>
+                  <div className="font-medium text-green-600">Funcionando</div>
+                </div>
+                <div>
+                  <div className="text-gray-600">Clientes</div>
+                  <div className="font-medium">{clients.length}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* Modales */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-8 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            
+            {/* Modal para Crear Cliente */}
+            {modalType === 'createClient' && (
+              <>
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-xl font-bold text-gray-900">Crear Nuevo Cliente</h3>
+                  <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
+                    <X size={24} />
+                  </button>
+                </div>
+
+                <div className="space-y-6">
+                  {/* Información Básica */}
+                  <div className="space-y-4">
+                    <h4 className="text-lg font-medium text-gray-900">Información Básica</h4>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Nombre de la Empresa *
+                        </label>
+                        <input
+                          type="text"
+                          value={newClient.name || ''}
+                          onChange={(e) => setNewClient({...newClient, name: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          required
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Email *
+                        </label>
+                        <input
+                          type="email"
+                          value={newClient.email || ''}
+                          onChange={(e) => setNewClient({...newClient, email: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          required
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Teléfono
+                        </label>
+                        <input
+                          type="tel"
+                          value={newClient.phone || ''}
+                          onChange={(e) => setNewClient({...newClient, phone: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          País
+                        </label>
+                        <input
+                          type="text"
+                          value={newClient.country || ''}
+                          onChange={(e) => setNewClient({...newClient, country: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Dirección
+                      </label>
+                      <textarea
+                        value={newClient.address || ''}
+                        onChange={(e) => setNewClient({...newClient, address: e.target.value})}
+                        rows={2}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Tipos de Documentos */}
+                  <div className="space-y-4">
+                    <h4 className="text-lg font-medium text-gray-900">Tipos de Documentos</h4>
+                    <p className="text-sm text-gray-600">Selecciona qué tipos de documentos necesita este cliente:</p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {Object.entries(documentTypeConfigs).map(([key, config]) => {
+                        const isSelected = newClient.documentTypes?.includes(key as DocumentType);
+                        const colorClasses = getColorClasses(config.color);
+                        
+                        return (
+                          <div
+                            key={key}
+                            onClick={() => toggleDocumentType(key as DocumentType)}
+                            className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
+                              isSelected
+                                ? `${colorClasses.border} ${colorClasses.bgLight}`
+                                : 'border-gray-200 hover:border-gray-300'
+                            }`}
+                          >
+                            <div className="flex items-center space-x-3">
+                              {isSelected ? (
+                                <CheckSquare className={colorClasses.text} size={20} />
+                              ) : (
+                                <Square className="text-gray-400" size={20} />
+                              )}
+                              {renderIcon(config.icon, colorClasses.text)}
+                              <span className="font-medium">{config.name}</span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Botones */}
+                  <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200">
+                    <button
+                      type="button"
+                      onClick={closeModal}
+                      className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      onClick={saveClient}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    >
+                      Crear Cliente
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
